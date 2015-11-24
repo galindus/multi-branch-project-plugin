@@ -998,7 +998,11 @@ public abstract class AbstractMultiBranchProject<P extends AbstractProject<P, B>
 		Set<String> newBranches = new HashSet<String>();
 		for (SCMHead head : heads) {
 			String branchName = head.getName();
-			branches.put(branchName, head);
+			if (branchName.indexOf("/") > 0) {
+				branches.put(branchName, new SCMHead("*/" + branchName));
+			}else{
+				branches.put(branchName, head);
+			}
 
 			if (!subProjects.containsKey(branchName)) {
 				// Add new projects
